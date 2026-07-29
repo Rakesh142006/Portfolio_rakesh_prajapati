@@ -26,10 +26,10 @@ load_dotenv(BASE_DIR / '.env')
 SECRET_KEY = 'django-insecure-gn&nx2266pgb3nj(*8=sh!lea(iq(bf+#94@rk(*rmib!kd=1l'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+DEBUG = os.environ.get("DEBUG", "False") == "True"
 
 # Application definition
 
@@ -46,6 +46,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -137,4 +138,7 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')              
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')      
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-CONTACT_RECEIVER_EMAIL = os.environ.get('CONTACT_RECEIVER_EMAIL', EMAIL_HOST_USER)  
+CONTACT_RECEIVER_EMAIL = os.environ.get('CONTACT_RECEIVER_EMAIL', EMAIL_HOST_USER) 
+
+
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
