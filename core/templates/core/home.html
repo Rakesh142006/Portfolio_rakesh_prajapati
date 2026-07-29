@@ -1,0 +1,117 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block title %}{{ profile.full_name }} — {{ profile.tagline }}{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div class="container hero-grid">
+    <div data-reveal="">
+      <div class="hero-kicker">// Portfolio — Dwg. 01</div>
+      <h1>{{ profile.full_name }},<br><em>{{ profile.tagline }}</em></h1>
+      <p class="hero-sub">{{ profile.bio|truncatewords:32 }}</p>
+      <div class="hero-actions">
+        <a href="{% url 'core:projects' %}" class="btn btn-primary">View Projects</a>
+        <a href="{% url 'core:contact' %}" class="btn btn-ghost">Get in Touch</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="num">{{ project_count }}+</div>
+          <div class="lbl">Projects Shipped</div>
+        </div>
+        <div class="hero-stat">
+          <div class="num">{{ certificate_count }}+</div>
+          <div class="lbl">Certifications</div>
+        </div>
+        <div class="hero-stat">
+          <div class="num">{{ profile.years_experience }}+</div>
+          <div class="lbl">Years Experience</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-panel crop-frame" data-reveal="">
+      <div class="hero-panel-header">
+        <span>Profile.dwg</span>
+        <span>Scale 1:1</span>
+      </div>
+      <div class="hero-photo">
+        {% if profile.profile_image %}
+          <img src="{{ profile.profile_image.url }}" alt="{{ profile.full_name }}">
+        {% else %}
+          <div class="placeholder">Add a profile photo<br>from the admin panel</div>
+        {% endif %}
+      </div>
+      <div class="hero-tags">
+        <span class="tag">Django</span>
+        <span class="tag">Python</span>
+        <span class="tag">REST APIs</span>
+        <span class="tag">PostgreSQL</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--tight">
+  <div class="container">
+    <div class="section-head" data-reveal="">
+      <div class="eyebrow">Selected Work</div>
+      <h2>Featured Projects</h2>
+      <p>A few things I've designed, built, and shipped end to end.</p>
+    </div>
+
+    {% if featured_projects %}
+    <div class="grid">
+      {% for project in featured_projects %}
+      <a href="{% url 'core:project_detail' project.slug %}" class="card" data-reveal="" style="text-decoration:none;">
+        <div class="card-media">
+          {% if project.image %}
+            <img src="{{ project.image.url }}" alt="{{ project.title }}">
+          {% else %}
+            <span class="placeholder">No preview image</span>
+          {% endif %}
+        </div>
+        <div class="card-body">
+          <span class="card-index">FIG. {{ forloop.counter|stringformat:"02d" }}</span>
+          <h3>{{ project.title }}</h3>
+          <p>{{ project.summary }}</p>
+          <div class="card-tags">
+            {% for tech in project.tech_list|slice:":3" %}
+              <span class="tag">{{ tech }}</span>
+            {% endfor %}
+          </div>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+    {% else %}
+      <div class="empty-state">No featured projects yet — mark a project as "featured" in the admin panel.</div>
+    {% endif %}
+  </div>
+</section>
+
+{% if skills %}
+<section class="section section--tight">
+  <div class="container">
+    <div class="section-head" data-reveal="">
+      <div class="eyebrow">Toolkit</div>
+      <h2>Core Skills</h2>
+    </div>
+    <div class="hero-tags" data-reveal="" style="gap:10px;">
+      {% for skill in skills %}
+        <span class="tag" style="font-size:12.5px; padding:8px 14px;">{{ skill.name }}</span>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<section class="cta-band" data-reveal="">
+  <div class="container">
+    <h2>Have a project in mind? Let's build it.</h2>
+    <div class="actions">
+      <a href="{% url 'core:contact' %}" class="btn btn-primary">Start a Conversation</a>
+      <a href="{% url 'core:certificates' %}" class="btn btn-ghost">View Certificates</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

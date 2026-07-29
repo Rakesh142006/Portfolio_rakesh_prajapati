@@ -1,0 +1,61 @@
+{% extends "core/base.html" %}
+{% block title %}{{ project.title }} — {{ profile.full_name }}{% endblock %}
+
+{% block content %}
+<section class="page-header">
+  <div class="container">
+    <div class="eyebrow"><a href="{% url 'core:projects' %}" style="color:var(--accent);">&larr; All Projects</a></div>
+  </div>
+</section>
+
+<section class="section section--tight">
+  <div class="container detail-hero">
+    <div class="detail-media crop-frame" data-reveal>
+      {% if project.image %}
+        <img src="{{ project.image.url }}" alt="{{ project.title }}">
+      {% else %}
+        <span class="placeholder">No preview image</span>
+      {% endif %}
+    </div>
+    <div class="detail-body" data-reveal>
+      <div class="eyebrow">Case Study</div>
+      <h1>{{ project.title }}</h1>
+      <p style="color: var(--text-dim); font-size: 17px; margin-top: 10px;">{{ project.summary }}</p>
+      <div class="detail-meta">
+        {% for tech in project.tech_list %}
+          <span class="tag">{{ tech }}</span>
+        {% endfor %}
+      </div>
+      <div class="detail-desc">{{ project.description|linebreaksbr }}</div>
+      <div class="detail-actions">
+        {% if project.live_url %}<a href="{{ project.live_url }}" target="_blank" rel="noopener" class="btn btn-primary">View Live</a>{% endif %}
+        {% if project.github_url %}<a href="{{ project.github_url }}" target="_blank" rel="noopener" class="btn btn-ghost">View Code</a>{% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% if related %}
+<section class="section section--tight">
+  <div class="container">
+    <div class="section-head" data-reveal>
+      <div class="eyebrow">More Work</div>
+      <h2>Other Projects</h2>
+    </div>
+    <div class="grid">
+      {% for p in related %}
+      <a href="{% url 'core:project_detail' p.slug %}" class="card" data-reveal style="text-decoration:none;">
+        <div class="card-media">
+          {% if p.image %}<img src="{{ p.image.url }}" alt="{{ p.title }}">{% else %}<span class="placeholder">No preview image</span>{% endif %}
+        </div>
+        <div class="card-body">
+          <h3>{{ p.title }}</h3>
+          <p>{{ p.summary }}</p>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+{% endblock %}

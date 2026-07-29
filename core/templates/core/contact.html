@@ -1,0 +1,83 @@
+{% extends "core/base.html" %}
+{% block title %}Contact — {{ profile.full_name }}{% endblock %}
+
+{% block content %}
+<section class="page-header">
+  <div class="container">
+    <div class="eyebrow">Dwg. 05 — Contact</div>
+    <h1>Let's Talk</h1>
+    <p>Have a project, a question, or just want to say hi? Send a message below.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container contact-grid">
+    <div data-reveal>
+      <div class="eyebrow">Reach Me</div>
+      {% if profile.email %}
+      <div class="contact-info-item">
+        <div class="ic">@</div>
+        <div>
+          <h4>Email</h4>
+          <a href="mailto:{{ profile.email }}">{{ profile.email }}</a>
+        </div>
+      </div>
+      {% endif %}
+      {% if profile.phone %}
+      <div class="contact-info-item">
+        <div class="ic">#</div>
+        <div>
+          <h4>Phone</h4>
+          <a href="tel:{{ profile.phone }}">{{ profile.phone }}</a>
+        </div>
+      </div>
+      {% endif %}
+      {% if profile.location %}
+      <div class="contact-info-item">
+        <div class="ic">&#9679;</div>
+        <div>
+          <h4>Location</h4>
+          <p>{{ profile.location }}</p>
+        </div>
+      </div>
+      {% endif %}
+      <div class="contact-info-item" style="border-bottom:none;">
+        <div class="ic">&rarr;</div>
+        <div>
+          <h4>Response Time</h4>
+          <p>Usually within 1–2 business days</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-panel" data-reveal>
+      <form method="post" novalidate>
+        {% csrf_token %}
+        <div class="form-row form-row-split">
+          <div>
+            <label for="{{ form.name.id_for_label }}">Name</label>
+            {{ form.name }}
+            {{ form.name.errors }}
+          </div>
+          <div>
+            <label for="{{ form.email.id_for_label }}">Email</label>
+            {{ form.email }}
+            {{ form.email.errors }}
+          </div>
+        </div>
+        <div class="form-row">
+          <label for="{{ form.subject.id_for_label }}">Subject</label>
+          {{ form.subject }}
+          {{ form.subject.errors }}
+        </div>
+        <div class="form-row">
+          <label for="{{ form.message.id_for_label }}">Message</label>
+          {{ form.message }}
+          {{ form.message.errors }}
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;">Send Message</button>
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}

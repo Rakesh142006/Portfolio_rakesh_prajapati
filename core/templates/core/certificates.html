@@ -1,0 +1,65 @@
+{% extends "core/base.html" %}
+{% block title %}Certificates — {{ profile.full_name }}{% endblock %}
+
+{% block content %}
+<section class="page-header">
+  <div class="container">
+    <div class="eyebrow">Dwg. 04 — Credentials</div>
+    <h1>Certificates</h1>
+    <p>Courses, exams, and programs I've completed along the way.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    {% if certificates %}
+    <div class="grid">
+      {% for cert in certificates %}
+      <div class="card cert-card" data-reveal>
+        <div class="card-media">
+          {% if cert.image %}
+            <img src="{{ cert.image.url }}" alt="{{ cert.title }}"
+                 class="cert-image-trigger"
+                 data-cert-image="{{ cert.image.url }}"
+                 data-cert-title="{{ cert.title }}"
+                 data-cert-issuer="{{ cert.issuer }}"
+                 data-cert-date="{{ cert.issue_date|date:'M Y' }}">
+          {% else %}
+            <span class="placeholder">No certificate image</span>
+          {% endif %}
+        </div>
+        <div class="card-body">
+          <span class="card-index">FIG. {{ forloop.counter|stringformat:"02d" }}</span>
+          <h3>{{ cert.title }}</h3>
+          <p class="cert-issuer">{{ cert.issuer }} &middot; {{ cert.issue_date|date:"M Y" }}</p>
+          {% if cert.credential_url %}
+          <div class="card-links">
+            <a href="{{ cert.credential_url }}" target="_blank" rel="noopener">View Credential &rarr;</a>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+      <div class="empty-state">No certificates added yet — add one from the admin panel at /admin/.</div>
+    {% endif %}
+  </div>
+</section>
+
+<!-- Certificate image lightbox -->
+<div class="cert-modal" id="certModal" aria-hidden="true">
+  <div class="cert-modal-backdrop" data-close-modal></div>
+  <div class="cert-modal-panel" role="dialog" aria-modal="true" aria-labelledby="certModalTitle">
+      <button type="button" class="cert-modal-close" data-close-modal aria-label="Close">&times;</button>
+
+    <div class="cert-modal-image">
+      <img id="certModalImage" src="" alt="">
+    </div>
+    <div class="cert-modal-body">
+      <h3 id="certModalTitle"></h3>
+      <p id="certModalIssuer" class="cert-issuer"></p>
+    </div>
+  </div>
+</div>
+{% endblock %}

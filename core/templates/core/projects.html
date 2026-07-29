@@ -1,0 +1,44 @@
+{% extends "core/base.html" %}
+{% block title %}Projects — {{ profile.full_name }}{% endblock %}
+
+{% block content %}
+<section class="page-header">
+  <div class="container">
+    <div class="eyebrow">Dwg. 03 — Works</div>
+    <h1>Projects</h1>
+    <p>A catalog of things I've built — from side experiments to production systems.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    {% if projects %}
+    <div class="grid">
+      {% for project in projects %}
+      <a href="{% url 'core:project_detail' project.slug %}" class="card" data-reveal style="text-decoration:none;">
+        <div class="card-media">
+          {% if project.image %}
+            <img src="{{ project.image.url }}" alt="{{ project.title }}">
+          {% else %}
+            <span class="placeholder">No preview image</span>
+          {% endif %}
+        </div>
+        <div class="card-body">
+          <span class="card-index">FIG. {{ forloop.counter|stringformat:"02d" }}{% if project.featured %} · FEATURED{% endif %}</span>
+          <h3>{{ project.title }}</h3>
+          <p>{{ project.summary }}</p>
+          <div class="card-tags">
+            {% for tech in project.tech_list|slice:":4" %}
+              <span class="tag">{{ tech }}</span>
+            {% endfor %}
+          </div>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+    {% else %}
+      <div class="empty-state">No projects added yet — add one from the admin panel at /admin/.</div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

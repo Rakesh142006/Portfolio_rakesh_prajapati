@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Portfolio{% endblock %}</title>
+  <meta name="description" content="{% block meta_desc %}Developer portfolio — projects, certificates, and contact.{% endblock %}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+  <div class="blueprint-bg" aria-hidden="true"></div>
+
+  <header class="nav">
+  <div class="container">
+    <a href="{% url 'core:home' %}" class="nav-brand">
+      <span class="dot"></span>
+      {{ profile.full_name|default:"Portfolio" }}
+    </a>
+    <nav class="nav-links" id="navLinks">
+      <a href="{% url 'core:home' %}" class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}">Home</a>
+      <a href="{% url 'core:about' %}" class="{% if request.resolver_match.url_name == 'about' %}active{% endif %}">About</a>
+      <a href="{% url 'core:projects' %}" class="{% if request.resolver_match.url_name == 'projects' or request.resolver_match.url_name == 'project_detail' %}active{% endif %}">Projects</a>
+      <a href="{% url 'core:certificates' %}" class="{% if request.resolver_match.url_name == 'certificates' %}active{% endif %}">Certificates</a>
+      <a href="{% url 'core:contact' %}" class="{% if request.resolver_match.url_name == 'contact' %}active{% endif %}">Contact</a>
+      {% if profile.resume %}
+      <a href="{{ profile.resume.url }}" download class="nav-resume-link">Resume &darr;</a>
+      {% endif %}
+    </nav>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+      <span></span>
+    </button>
+
+    <button id="themeToggle" class="theme-toggle" aria-label="Toggle Theme">
+    🌙
+</button>
+  </div>
+</header>
+
+  <main>
+    {% if messages %}
+      <div class="container" style="padding-top: 28px;">
+        {% for message in messages %}
+          <div class="alert">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand">{{ profile.full_name|default:"Portfolio" }}</div>
+          <div class="footer-meta" style="margin-top:10px;">
+            <span>© {% now "Y" %}</span>
+            <span>Built with Django</span>
+            <span>Sheet 01/01</span>
+          </div>
+        </div>
+        <div class="footer-social">
+          {% if profile.github_url %}<a href="{{ profile.github_url }}" target="_blank" rel="noopener" aria-label="GitHub">GH</a>{% endif %}
+          {% if profile.linkedin_url %}<a href="{{ profile.linkedin_url }}" target="_blank" rel="noopener" aria-label="LinkedIn">IN</a>{% endif %}
+          {% if profile.twitter_url %}<a href="{{ profile.twitter_url }}" target="_blank" rel="noopener" aria-label="Twitter">X</a>{% endif %}
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="{% static 'js/script.js' %}"></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>
