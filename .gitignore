@@ -3,9 +3,7 @@ __pycache__/
 *.pyo
 db.sqlite3
 staticfiles/
-media/*
-!media/.gitkeep
-!media/**/.gitkeep
+
 venv/
 .env
 *.log
