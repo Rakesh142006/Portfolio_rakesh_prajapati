@@ -15,7 +15,7 @@
     <div data-reveal>
       <div class="hero-photo crop-frame" style="margin-bottom:24px;">
         {% if profile.profile_image %}
-          <img src="{{ profile.profile_image.url }}" alt="{{ profile.full_name }}">
+          <img src="{% static 'profile/myself_image.jpeg' %}" alt="Profile">
         {% else %}
           <div class="placeholder">Add a profile photo<br>from the admin panel</div>
         {% endif %}
