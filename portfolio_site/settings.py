@@ -11,8 +11,8 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 from pathlib import Path
 import os
-from dotenv import load_dotenv
-import cloudinary
+from dotenv import load_dotenv # type: ignore
+import cloudinary # type: ignore
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
